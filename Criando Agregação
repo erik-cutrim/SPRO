@@ -1,0 +1,35 @@
+[
+  {
+    "$lookup": {
+      "from": "Montadoras",
+      "localField": "Montadora",
+      "foreignField": "Montadora",
+      "as": "MontadoraInfo"
+    }
+  },
+  {
+    "$unwind": "$MontadoraInfo"
+  },
+  {
+    "$group": {
+      "_id": {
+        "_id": "$_id",
+        "Carro": "$Carro",
+        "Cor": "$Cor",
+        "Montadora": "$Montadora",
+        "País": "$MontadoraInfo.País"
+      },
+      "Montadoras": { "$sum": 1 }
+    }
+  },
+  {
+    "$project": {
+      "_id": "$_id._id",
+      "Carro": "$_id.Carro",
+      "Cor": "$_id.Cor",
+      "Montadora": "$_id.Montadora",
+      "Montadoras": "$Montadoras",
+      "País": "$_id.País"
+    }
+  }
+]
